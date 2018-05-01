@@ -69,17 +69,6 @@ namespace AutoName.xUnit.Tests
             
             result.Should().Be("PropertyTests.cs");
         }
-
-      
-
-
-        // [NamedFact(SplitBy.Uppercase, JoinWith.SingleSpace)]
-        // public void TheSpecialTestToSeeIfNamingIsCorrect()
-        // {
-             
-        //     //var a = new NamedFactAttribute();
-        //     Assert.True(false);
-        // }
     
     }
 }

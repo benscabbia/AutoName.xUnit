@@ -8,7 +8,6 @@ using Xunit;
 
 namespace AutoName.xUnit
 {
-    //https://bitwiseguy.wordpress.com/2015/11/23/creating-readable-xunit-test-method-names-automatically/
     [AttributeUsage(AttributeTargets.All)]
     public class NamedFactAttribute : FactAttribute
     {
@@ -91,7 +90,6 @@ namespace AutoName.xUnit
             return string.Join(" ", words);
         }   
 
-        
         private MethodInfo LoadMethod(string methodName)
         {
             MethodInfo method = this.GetType().GetMethod(methodName);
