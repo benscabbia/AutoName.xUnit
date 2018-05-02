@@ -89,7 +89,19 @@ namespace AutoName.xUnit
         {
             Guard.ArgumentIsNotNullOrWhiteSpace(words);
             return string.Join(" ", words);
-        }   
+        }
+
+        public string JoinWithDoubleSpace(string[] words)
+        {
+            Guard.ArgumentIsNotNullOrWhiteSpace(words);
+            return string.Join("  ", words);
+        }
+
+        public string JoinWithTab(string[] words)
+        {
+            Guard.ArgumentIsNotNullOrWhiteSpace(words);
+            return string.Join("\t", words);
+        }
 
         private MethodInfo LoadMethod(string methodName)
         {

@@ -4,7 +4,6 @@ namespace AutoName.xUnit
     {
         Uppercase,
         Spaces, 
-        Underscore,
-        Unknown
+        Underscore
     }
 }
