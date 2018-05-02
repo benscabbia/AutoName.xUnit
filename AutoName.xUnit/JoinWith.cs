@@ -4,7 +4,6 @@ namespace AutoName.xUnit
     {
         SingleSpace,
         DoubleSpace,
-        Tab,
-        Unknown
+        Tab
     }
 }

@@ -4,7 +4,6 @@ namespace AutoName.xUnit
     {
         FileName, 
         FilePath,
-        MethodName,
-        Unknown
+        MethodName
     }
 }
