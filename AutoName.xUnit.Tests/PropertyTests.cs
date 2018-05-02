@@ -5,7 +5,7 @@ using FluentAssertions;
 
 namespace AutoName.xUnit.Tests
 {
-    public class UnitTest1
+    public class PropertyTests
     {
         [Fact]
         public void NameIt_Should_Have_Starting_State_Set_To_FileName()
