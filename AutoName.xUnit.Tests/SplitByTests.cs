@@ -41,7 +41,7 @@ namespace AutoName.xUnit.Tests
         [InlineData("0Split1_By2_Under3_Score4", new [] {"0Split1", "By2", "Under3", "Score4"})]                                                                                        
         [InlineData("________", new string[0])]                                                                                        
         [InlineData("S_P_L_I_T_B_Y_U_N_D_E_R_S_C_O_R_E", new [] {"S","P","L","I","T","B","Y","U","N","D","E","R","S","C","O","R","E"})]
-        public void SplitByunderscore_Should_Correctly_Handle_Various_Inputs(string word, string[] expected)
+        public void SplitByUnderscore_Should_Correctly_Handle_Various_Inputs(string word, string[] expected)
         {
             var attribute = new NamedFactAttribute();
             var actual = attribute.SplitByUnderscore(word);

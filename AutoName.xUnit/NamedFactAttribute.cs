@@ -87,6 +87,7 @@ namespace AutoName.xUnit
 
         public string JoinWithSingleSpace(string[] words)
         {
+            Guard.ArgumentIsNotNullOrWhiteSpace(words);
             return string.Join(" ", words);
         }   
 
