@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -11,106 +12,70 @@ namespace AutoName.xUnit
     [AttributeUsage(AttributeTargets.All)]
     public class NamedFactAttribute : FactAttribute
     {
+        private Join _join = new Join();
+        private Split _split = new Split();
+        
         public string CallerMemberName { get; }
         public string CallerFilePath { get; }
         public string CallerFile { get; }
-        public virtual NameIt NameIt { get; set; } = NameIt.FileName;
-        public virtual SplitBy Splitter { get; set; } = SplitBy.Uppercase;
-        public virtual JoinWith Joiner { get; set; } = JoinWith.SingleSpace;
+        public virtual NameIt NameIt { get; set; }
+        public virtual SplitBy Splitter { get; set; }
+        public virtual JoinWith Joiner { get; set; }
 
         public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-        : this(callerName, sourceFilePath)
         {
             NameIt = nameIt;
             Splitter = splitBy;
             Joiner = joinWith;
 
+            CallerMemberName = callerName;
+            CallerFilePath = sourceFilePath;            
+            CallerFile = Path.GetFileName(sourceFilePath);
+
             SetDisplayName();
         }
 
         public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-        : this(NameIt.FileName, splitBy, joinWith, callerName, sourceFilePath)
+        : this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
         {}
 
-        public NamedFactAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-        {
-            CallerMemberName = callerName;
-            CallerFilePath = sourceFilePath;            
-            CallerFile = Path.GetFileName(sourceFilePath);
-        }
 
-        public void SetDisplayName(){
-            var name = NameIt.ToString();
+        public NamedFactAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+        : this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
+        {}
+
+        public virtual void SetDisplayName(){
+            var name = CallerMemberName;        
             var splitter = $"SplitBy{Splitter.ToString()}";
             var joiner = $"JoinWith{Joiner.ToString()}";
 
-            var splitterMethod = LoadMethod(splitter);
-            var joinerMethod = LoadMethod(joiner);
-
-            // these should be ran with a try catch to ensure exception is handled with default
-            IEnumerable<string> splitterResult = ExecuteMethod<IEnumerable<string>>(splitterMethod, new[] { name });            
-            var joinerResult =  ExecuteMethod<string>(joinerMethod, new[] { splitterResult} );
-
-            SetDisplayName(joinerResult);
-
-        }
-        public void SetDisplayName(string word)
-        {
-            base.DisplayName = word;
-        }
-        public void SetDisplayName(string word, SplitBy splitBy, JoinWith joinWith){
+            var splitterMethod = LoadSplitter(splitter);
             
+            var joinerMethod = LoadJoiner(joiner);
+            // var splitterResult = splitterMethod(name);
+            // var joinerResult = joinerMethod(splitterResult);
+           
+            var splitOutput = splitterMethod(name);
+            var result = joinerMethod(splitOutput); 
+
+            base.DisplayName = result;
         }
 
-        public void SetDisplayName(string word, Func<string, string> formatter)
+        private Func<IEnumerable<string>, string> LoadJoiner(string methodName){
+            var o = new Join();
+            var method = o.GetType().GetMethod(methodName);
+            Func<IEnumerable<string>, string> converted = 
+                (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);            
+            return converted;
+        }
+
+        private Func<string, IEnumerable<string>> LoadSplitter(string methodName)
         {
-            base.DisplayName = formatter(word);
+            var x = new Split();
+            var method = x.GetType().GetMethod(methodName);
+            Func<string, IEnumerable<string>> converted = 
+                (Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);            
+            return converted;
         }
-
-        public void SetDisplayName(string word, Func<string, string[]> splitter, Func<string[], string> joiner)
-        {
-            var splitString = splitter(word);
-            base.DisplayName = joiner(splitString);
-        }
-
-        public IEnumerable<string> SplitByUppercase(string word)
-        {
-            Guard.ArgumentIsNotNullOrWhiteSpace(word);
-            return Regex.Split(word, @"(?<!^)(?=[A-Z])");
-        }
-
-        public IEnumerable<string> SplitByUnderscore(string word)
-        {
-            Guard.ArgumentIsNotNullOrWhiteSpace(word);
-            return word.Split(new [] {'_'}, StringSplitOptions.RemoveEmptyEntries);
-        }
-
-        public string JoinWithSingleSpace(string[] words)
-        {
-            Guard.ArgumentIsNotNullOrWhiteSpace(words);
-            return string.Join(" ", words);
-        }
-
-        public string JoinWithDoubleSpace(string[] words)
-        {
-            Guard.ArgumentIsNotNullOrWhiteSpace(words);
-            return string.Join("  ", words);
-        }
-
-        public string JoinWithTab(string[] words)
-        {
-            Guard.ArgumentIsNotNullOrWhiteSpace(words);
-            return string.Join("\t", words);
-        }
-
-        private MethodInfo LoadMethod(string methodName)
-        {
-            MethodInfo method = this.GetType().GetMethod(methodName);
-            return method;
-        }
-
-        private T ExecuteMethod<T>(MethodInfo method, object[] @params){
-            return (T)method.Invoke(this, @params);
-        }     
     }
 }

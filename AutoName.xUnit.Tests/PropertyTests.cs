@@ -8,12 +8,12 @@ namespace AutoName.xUnit.Tests
     public class PropertyTests
     {
         [Fact]
-        public void NameIt_Should_Have_Starting_State_Set_To_FileName()
+        public void NameIt_Should_Have_Starting_State_Set_To_MethodName()
         {
             var attribute = new NamedFactAttribute();
             var result = attribute.NameIt;
 
-            result.Should().Be(NameIt.FileName);
+            result.Should().Be(NameIt.MethodName);
         }
 
         [Fact]
@@ -69,6 +69,9 @@ namespace AutoName.xUnit.Tests
             
             result.Should().Be("PropertyTests.cs");
         }
+
+        
+        
     
     }
 }
