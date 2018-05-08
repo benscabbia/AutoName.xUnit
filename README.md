@@ -57,3 +57,20 @@ public void TheNameOfYourTestMethod2(...)
 ```
 
 ### 3. Custom Implementation
+```c#
+public class MyCustomAttribute : NamedFactAttribute 
+{
+    // Change default splitter
+    public override SplitBy Splitter { get; set; } 
+    public override JoinWith Joiner { get; set; } 
+    
+    public override SetDisplayName()
+    {
+        var result = "";
+        base.DisplayName = result;
+        
+    }
+    
+    
+}
+```
