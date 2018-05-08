@@ -18,7 +18,7 @@ namespace AutoName.xUnit.Tests
         [InlineData("SPLITBYUPPERCASE", new [] {"S","P","L","I","T","B","Y","U","P","P","E","R","C","A","S","E"})]                                                                                        
         public void SplitByUppercase_Should_Correctly_Handle_Various_Inputs(string word, string[] expected)
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Split();
             var actual = attribute.SplitByUppercase(word);
             
             actual.Should().Equal(expected);
@@ -27,7 +27,7 @@ namespace AutoName.xUnit.Tests
         [Fact]
         public void SplitByUppercase_Should_Throw_Exception_When_Null()
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Split();
             attribute.Invoking(x => x.SplitByUppercase(null)).Should().Throw<ArgumentException>();
         }
 
@@ -43,7 +43,7 @@ namespace AutoName.xUnit.Tests
         [InlineData("S_P_L_I_T_B_Y_U_N_D_E_R_S_C_O_R_E", new [] {"S","P","L","I","T","B","Y","U","N","D","E","R","S","C","O","R","E"})]
         public void SplitByUnderscore_Should_Correctly_Handle_Various_Inputs(string word, string[] expected)
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Split();
             var actual = attribute.SplitByUnderscore(word);
             actual.Should().Equal(expected);
         }
@@ -51,7 +51,7 @@ namespace AutoName.xUnit.Tests
         [Fact]
         public void SplitByUnderscore_Should_Throw_Exception_When_Null()
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Split();
             attribute.Invoking(x => x.SplitByUnderscore(null)).Should().Throw<ArgumentException>();
         }
 
