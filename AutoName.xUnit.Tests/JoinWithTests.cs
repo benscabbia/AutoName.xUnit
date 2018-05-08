@@ -17,7 +17,7 @@ namespace AutoName.xUnit.Tests
         
         public void JoinWithSingleSpace_Should_Correctly_Handle_Various_Inputs(string[] words, string expected)
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Join();
             var actual = attribute.JoinWithSingleSpace(words);
             actual.Should().Be(expected);
         }
@@ -25,7 +25,7 @@ namespace AutoName.xUnit.Tests
         [Fact]
         public void JoinWithSingleSpace_Should_Throw_Exception_When_Null()
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Join();
             attribute.Invoking(x => x.JoinWithSingleSpace(null)).Should().Throw<ArgumentException>();
         }
 
@@ -39,7 +39,7 @@ namespace AutoName.xUnit.Tests
         [InlineData(new [] {" ", " "}, "    ")]
         public void JoinWithDoubleSpace_Should_Correctly_Handle_Various_Inputs(string[] words, string expected)
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Join();
             var actual = attribute.JoinWithDoubleSpace(words);
             actual.Should().Be(expected);
         }
@@ -47,7 +47,7 @@ namespace AutoName.xUnit.Tests
         [Fact]
         public void JoinWithDoubleSpace_Should_Throw_Exception_When_Null()
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Join();
             attribute.Invoking(x => x.JoinWithDoubleSpace(null)).Should().Throw<ArgumentException>();
         }
 
@@ -61,7 +61,7 @@ namespace AutoName.xUnit.Tests
         [InlineData(new [] {" ", " "}, " \t ")]
         public void JoinWithTab_Should_Correctly_Handle_Various_Inputs(string[] words, string expected)
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Join();
             var actual = attribute.JoinWithTab(words);
             actual.Should().Be(expected);
         }
@@ -69,7 +69,7 @@ namespace AutoName.xUnit.Tests
         [Fact]
         public void JoinWithTab_Should_Throw_Exception_When_Null()
         {
-            var attribute = new NamedFactAttribute();
+            var attribute = new Join();
             attribute.Invoking(x => x.JoinWithDoubleSpace(null)).Should().Throw<ArgumentException>();
         }
 
