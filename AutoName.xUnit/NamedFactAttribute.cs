@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
@@ -9,7 +9,6 @@ using Xunit;
 
 namespace AutoName.xUnit
 {
-    [AttributeUsage(AttributeTargets.All)]
     public class NamedFactAttribute : FactAttribute
     {
         private Join _join = new Join();
