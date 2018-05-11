@@ -17,9 +17,9 @@ namespace AutoName.xUnit
         public string CallerMemberName { get; }
         public string CallerFilePath { get; }
         public string CallerFile { get; }
-        public virtual NameIt NameIt { get; set; }
-        public virtual SplitBy Splitter { get; set; }
-        public virtual JoinWith Joiner { get; set; }
+        public NameIt NameIt { get; set; }
+        public SplitBy Splitter { get; set; }
+        public JoinWith Joiner { get; set; }
 
         public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
         {
@@ -44,21 +44,40 @@ namespace AutoName.xUnit
         {}
 
         public virtual void SetDisplayName(){
-            var name = CallerMemberName;        
-            var splitter = $"SplitBy{Splitter.ToString()}";
-            var joiner = $"JoinWith{Joiner.ToString()}";
+            var name = CallerMemberName;
 
-            var splitterMethod = LoadSplitter(splitter);
-            
+			var splitters = GetSplitters();
+            var joiner = GetJoiner();
+
+            var splitterMethods = LoadSplitters(splitters);            
             var joinerMethod = LoadJoiner(joiner);
-            // var splitterResult = splitterMethod(name);
-            // var joinerResult = joinerMethod(splitterResult);
-           
-            var splitOutput = splitterMethod(name);
-            var result = joinerMethod(splitOutput); 
+
+			string result = name;
+			foreach(var splitterMethod in splitterMethods)
+			{
+				result = joinerMethod(splitterMethod(result));
+			}
 
             base.DisplayName = result;
         }
+
+		private string GetJoiner()
+		{
+			return $"JoinWith{Joiner.ToString()}";
+		}
+
+		private IEnumerable<string> GetSplitters()
+		{			
+			List<string> result = new List<string>();
+			foreach (SplitBy splitter in Enum.GetValues(typeof(SplitBy)))
+			{
+				if (Splitter.HasFlag(splitter))
+				{
+					result.Add($"SplitBy{splitter.ToString()}");
+				};				
+			}
+			return result;
+		}		
 
         private Func<IEnumerable<string>, string> LoadJoiner(string methodName){
             var o = new Join();
@@ -68,13 +87,20 @@ namespace AutoName.xUnit
             return converted;
         }
 
-        private Func<string, IEnumerable<string>> LoadSplitter(string methodName)
+        private IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
         {
             var x = new Split();
-            var method = x.GetType().GetMethod(methodName);
-            Func<string, IEnumerable<string>> converted = 
-                (Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);            
-            return converted;
+			var methods = new List<Func<string, IEnumerable<string>>>();
+
+			foreach(var methodName in methodNames)
+			{
+				var method = x.GetType().GetMethod(methodName);
+				Func<string, IEnumerable<string>> converted = 
+					(Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);
+				methods.Add(converted);
+			}
+
+			return methods;
         }
     }
 }

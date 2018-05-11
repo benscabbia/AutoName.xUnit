@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoName.xUnit
 {
@@ -10,7 +11,14 @@ namespace AutoName.xUnit
             return string.Join(" ", words);
         }
 
-        public string JoinWithDoubleSpace(IEnumerable<string> words)
+		public string JoinWithSingleTrimmedSpace(IEnumerable<string> words)
+		{
+			Guard.ArgumentIsNotNullOrWhiteSpace(words);
+			IEnumerable<string> trimmedWords = words.Select(s => s.Trim());
+			return string.Join(" ", trimmedWords);
+		}
+
+		public string JoinWithDoubleSpace(IEnumerable<string> words)
         {
             Guard.ArgumentIsNotNullOrWhiteSpace(words);
             return string.Join("  ", words);
