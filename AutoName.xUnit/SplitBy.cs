@@ -1,8 +1,11 @@
+using System;
+
 namespace AutoName.xUnit
 {
+	[Flags]
     public enum SplitBy
     {
-        Uppercase,
-        Underscore
+        Underscore = 1,
+        Uppercase = 2
     }
 }
