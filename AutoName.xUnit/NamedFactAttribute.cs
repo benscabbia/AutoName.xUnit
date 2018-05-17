@@ -21,9 +21,9 @@ namespace AutoName.xUnit
 		public string FileNameWithoutExtension { get; }
         public string MethodName { get; }
 
-		public NameIt NameIt { get; set; }
-        public SplitBy Splitter { get; set; }
-        public JoinWith Joiner { get; set; }
+		public NameIt NameIt { get; }
+        public SplitBy Splitter { get; }
+        public JoinWith Joiner { get; }
 
         public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
         {
@@ -41,21 +41,9 @@ namespace AutoName.xUnit
 			SetDisplayName();
         }
 
-		private string GetNameSpace()
-		{
-			var pathsArray = AbsolutePath.Split(Path.DirectorySeparatorChar);
-			return pathsArray[pathsArray.Length - 2];
-		}
-
-		private string GetCallerFilePathWithoutFileExtension()
-		{
-			return AbsolutePath.Replace(".cs", "");
-		}
-
 		public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
         : this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
         {}
-
 
         public NamedFactAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
         : this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
@@ -77,6 +65,17 @@ namespace AutoName.xUnit
 
             base.DisplayName = result;
         }
+		
+		private string GetNameSpace()
+		{
+			var pathsArray = AbsolutePath.Split(Path.DirectorySeparatorChar);
+			return pathsArray[pathsArray.Length - 2];
+		}
+
+		private string GetCallerFilePathWithoutFileExtension()
+		{
+			return AbsolutePath.Replace(".cs", "");
+		}
 
 		private string GetName()
 		{
