@@ -25,22 +25,6 @@ namespace AutoName.xUnit
 		public SplitBy Splitter { get; }
 		public JoinWith Joiner { get; }
 
-		public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-		{
-			NameIt = nameIt;
-			Splitter = splitBy;
-			Joiner = joinWith;
-
-			AbsolutePath = sourceFilePath;
-			AbsolutePathWithoutExtension = GetCallerFilePathWithoutFileExtension();
-			NameSpace = GetNameSpace();
-			FileName = Path.GetFileName(sourceFilePath);
-			FileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourceFilePath);
-			MethodName = callerName;
-
-			SetDisplayName();
-		}
-
 		public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
 		: this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
 		{ }
@@ -49,22 +33,45 @@ namespace AutoName.xUnit
 		: this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
 		{ }
 
+		public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string methodName = null, [CallerFilePath] string absoluteFilePath = null)
+		{
+			NameIt = nameIt;
+			Splitter = splitBy;
+			Joiner = joinWith;
+
+			AbsolutePath = absoluteFilePath;
+			AbsolutePathWithoutExtension = GetCallerFilePathWithoutFileExtension();
+			NameSpace = GetNameSpace();
+			FileName = Path.GetFileName(absoluteFilePath);
+			FileNameWithoutExtension = Path.GetFileNameWithoutExtension(absoluteFilePath);
+			MethodName = methodName;
+
+			SetDisplayName();
+		}
+
 		public virtual void SetDisplayName()
 		{
-			var name = GetName();
 			var splitters = GetSplitters();
 			var joiner = GetJoiner();
-
 			var splitterMethods = LoadSplitters(splitters);
 			var joinerMethod = LoadJoiner(joiner);
 
-			string result = name;
-			foreach (var splitterMethod in splitterMethods)
-			{
-				result = joinerMethod(splitterMethod(result));
-			}
+			string result = ResolveName(splitterMethods, joinerMethod);
 
 			base.DisplayName = result;
+		}
+
+		private string ResolveName(
+			IEnumerable<Func<string, IEnumerable<string>>> splitterMethods,
+			Func<IEnumerable<string>, string> joinerMethod)
+		{
+			var result = string.Empty;
+			foreach (var splitterMethod in splitterMethods)
+			{
+				result = joinerMethod(splitterMethod(GetName()));
+			}
+
+			return result;
 		}
 
 		private string GetNameSpace()
