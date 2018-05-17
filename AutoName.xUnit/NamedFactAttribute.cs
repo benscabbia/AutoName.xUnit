@@ -14,10 +14,14 @@ namespace AutoName.xUnit
         private Join _join = new Join();
         private Split _split = new Split();
         
-        public string CallerMemberName { get; }
-        public string CallerFilePath { get; }
-        public string CallerFile { get; }
-        public NameIt NameIt { get; set; }
+        public string AbsolutePath { get; }
+		public string AbsolutePathWithoutExtension { get; }
+		public string NameSpace { get; }
+        public string FileName { get; }
+		public string FileNameWithoutExtension { get; }
+        public string MethodName { get; }
+
+		public NameIt NameIt { get; set; }
         public SplitBy Splitter { get; set; }
         public JoinWith Joiner { get; set; }
 
@@ -27,14 +31,28 @@ namespace AutoName.xUnit
             Splitter = splitBy;
             Joiner = joinWith;
 
-            CallerMemberName = callerName;
-            CallerFilePath = sourceFilePath;            
-            CallerFile = Path.GetFileName(sourceFilePath);
+            AbsolutePath = sourceFilePath;
+			AbsolutePathWithoutExtension = GetCallerFilePathWithoutFileExtension();
+			NameSpace = GetNameSpace();
+            FileName = Path.GetFileName(sourceFilePath);
+			FileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourceFilePath);
+            MethodName = callerName;
 
-            SetDisplayName();
+			SetDisplayName();
         }
 
-        public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+		private string GetNameSpace()
+		{
+			var pathsArray = AbsolutePath.Split(Path.DirectorySeparatorChar);
+			return pathsArray[pathsArray.Length - 2];
+		}
+
+		private string GetCallerFilePathWithoutFileExtension()
+		{
+			return AbsolutePath.Replace(".cs", "");
+		}
+
+		public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
         : this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
         {}
 
