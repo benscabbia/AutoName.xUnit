@@ -3,107 +3,95 @@ using Xunit;
 
 namespace AutoName.xUnit.Tests
 {
-    public class DisplayNameTests
-    {
-        [Fact]
-        public void DisplayNameShouldHaveCorrectValueWhenUsingUppercase()
-        {
-            var attribute = new NamedFactAttribute();
-            var result = attribute.DisplayName;
+	public class DisplayNameTests
+	{
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingUppercase()
+		{
+			var attribute = new NamedFactAttribute();
+			var result = attribute.DisplayName;
 
-            result.Should().Be("Display Name Should Have Correct Value When Using Uppercase");
-        
-        }
+			result.Should().Be("Display Name Should Have Correct Value When Using Uppercase");
 
-        [Fact]
-        public void DisplayName_Should_Have_Correct_Value_When_Using_Underscore()
-        {
-            var attribute = new NamedFactAttribute {
-                Splitter = SplitBy.Underscore             
-            };
+		}
 
-            attribute.SetDisplayName();
+		[Fact]
+		public void DisplayName_Should_Have_Correct_Value_When_Using_Underscore()
+		{
+			var attribute = new NamedFactAttribute(SplitBy.Underscore, JoinWith.SingleSpace);
 
-            var result = attribute.DisplayName;
+			attribute.SetDisplayName();
 
-            result.Should().Be("DisplayName Should Have Correct Value When Using Underscore");
-        }
+			var result = attribute.DisplayName;
 
-        [Fact]
-        public void DisplayName_Should_Behave_Consistently_With_Invalid_Splitter()
-        {
-            var attribute = new NamedFactAttribute {
-                Splitter = SplitBy.Uppercase
-            };
+			result.Should().Be("DisplayName Should Have Correct Value When Using Underscore");
+		}
 
-            attribute.SetDisplayName();
+		[Fact]
+		public void DisplayName_Should_Behave_Consistently_With_Invalid_Splitter()
+		{
+			var attribute = new NamedFactAttribute(SplitBy.Uppercase, JoinWith.SingleSpace);
 
-            var result = attribute.DisplayName;
+			attribute.SetDisplayName();
 
-            result.Should().Be("Display Name_ Should_ Behave_ Consistently_ With_ Invalid_ Splitter");
-        }
+			var result = attribute.DisplayName;
 
-        [Fact]
-        public void DisplayNameShouldBehaveConsistentlyWithInvalidSplitter()
-        {
-            var attribute = new NamedFactAttribute {
-                Splitter = SplitBy.Underscore
-            };
+			result.Should().Be("Display Name_ Should_ Behave_ Consistently_ With_ Invalid_ Splitter");
+		}
 
-            attribute.SetDisplayName();
+		[Fact]
+		public void DisplayNameShouldBehaveConsistentlyWithInvalidSplitter()
+		{
+			var attribute = new NamedFactAttribute(SplitBy.Underscore, JoinWith.SingleSpace);
 
-            var result = attribute.DisplayName;
+			attribute.SetDisplayName();
 
-            result.Should().Be("DisplayNameShouldBehaveConsistentlyWithInvalidSplitter");
-        }
+			var result = attribute.DisplayName;
 
-        [Fact]
-        public void DisplayNameShouldHaveCorrectValueWhenUsingSingleSpaceJoiner()
-        {
-            var attribute = new NamedFactAttribute {
-                Joiner = JoinWith.SingleSpace
-            };
+			result.Should().Be("DisplayNameShouldBehaveConsistentlyWithInvalidSplitter");
+		}
 
-            attribute.SetDisplayName();
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingSingleSpaceJoiner()
+		{
+			var attribute = new NamedFactAttribute(SplitBy.Uppercase, JoinWith.SingleSpace);
 
-            var result = attribute.DisplayName;
+			attribute.SetDisplayName();
 
-            result.Should().Be("Display Name Should Have Correct Value When Using Single Space Joiner");
-        }
+			var result = attribute.DisplayName;
 
-        [Fact]
-        public void DisplayNameShouldHaveCorrectValueWhenUsingDoubleSpaceJoiner()
-        {
-            var attribute = new NamedFactAttribute {
-                Joiner = JoinWith.DoubleSpace
-            };
+			result.Should().Be("Display Name Should Have Correct Value When Using Single Space Joiner");
+		}
 
-            attribute.SetDisplayName();
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingDoubleSpaceJoiner()
+		{
+			var attribute = new NamedFactAttribute(SplitBy.Uppercase, JoinWith.DoubleSpace);
 
-            var result = attribute.DisplayName;
+			attribute.SetDisplayName();
 
-            result.Should().Be("Display  Name  Should  Have  Correct  Value  When  Using  Double  Space  Joiner");
-        }
+			var result = attribute.DisplayName;
 
-                [Fact]
-        public void DisplayNameShouldHaveCorrectValueWhenUsingTabJoiner()
-        {
-            var attribute = new NamedFactAttribute {
-                Joiner = JoinWith.Tab
-            };
+			result.Should().Be("Display  Name  Should  Have  Correct  Value  When  Using  Double  Space  Joiner");
+		}
 
-            attribute.SetDisplayName();
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingTabJoiner()
+		{
+			var attribute = new NamedFactAttribute(SplitBy.Uppercase, JoinWith.Tab);
 
-            var result = attribute.DisplayName;
+			attribute.SetDisplayName();
 
-            result.Should().Be("Display\tName\tShould\tHave\tCorrect\tValue\tWhen\tUsing\tTab\tJoiner");
-        }
+			var result = attribute.DisplayName;
 
-        /*
+			result.Should().Be("Display\tName\tShould\tHave\tCorrect\tValue\tWhen\tUsing\tTab\tJoiner");
+		}
+
+		/*
             Test Splitter + Joiner
 
             
         
          */
-    }
+	}
 }
