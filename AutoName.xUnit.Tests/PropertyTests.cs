@@ -38,7 +38,7 @@ namespace AutoName.xUnit.Tests
         public void CallerMemberName_Should_Have_The_Correct_Value_Set_When_Using_Underscores()
         {
             var attribute = new NamedFactAttribute();
-            var result = attribute.CallerMemberName;
+            var result = attribute.MethodName;
             
             result.Should().Be("CallerMemberName_Should_Have_The_Correct_Value_Set_When_Using_Underscores");
         }
@@ -47,7 +47,7 @@ namespace AutoName.xUnit.Tests
         public void CallerMemberNameShouldHaveTheCorrectValueSetWhenUsingUppercase()
         {
             var attribute = new NamedFactAttribute();
-            var result = attribute.CallerMemberName;
+            var result = attribute.MethodName;
             
             result.Should().Be("CallerMemberNameShouldHaveTheCorrectValueSetWhenUsingUppercase");
         }
@@ -56,7 +56,7 @@ namespace AutoName.xUnit.Tests
         public void CallerMemberName_ShouldHaveTheCorrectValueSet_WhenUsingMixedNamed_()
         {
             var attribute = new NamedFactAttribute();
-            var result = attribute.CallerMemberName;
+            var result = attribute.MethodName;
             
             result.Should().Be("CallerMemberName_ShouldHaveTheCorrectValueSet_WhenUsingMixedNamed_");
         }
@@ -65,7 +65,7 @@ namespace AutoName.xUnit.Tests
         public void CallerFileName_Should_Have_The_Correct_Value()
         {
             var attribute = new NamedFactAttribute();
-            var result = attribute.CallerFile;
+            var result = attribute.FileName;
             
             result.Should().Be("PropertyTests.cs");
         }

@@ -1,9 +1,15 @@
+using System;
+
 namespace AutoName.xUnit
 {
+	[Flags]
     public enum NameIt
     {
-        FileName, 
-        FilePath,
-        MethodName
+        AbsolutePath = 1,
+		AbsolutePathWithoutExtension = 2,
+		NameSpace = 4,
+        FileName = 8, 
+		FileNameWithoutExtention = 16,
+        MethodName = 32
     }
 }
