@@ -2,6 +2,8 @@ using System;
 using System.Reflection;
 using Xunit;
 using FluentAssertions;
+using AutoName.xUnit;
+using System.IO;
 
 namespace AutoName.xUnit.Tests
 {
@@ -70,8 +72,54 @@ namespace AutoName.xUnit.Tests
             result.Should().Be("PropertyTests.cs");
         }
 
-        
-        
-    
-    }
+		[Fact]
+		public void AbsolutePath_Should_Have_The_Correct_Value()
+		{
+			var attribute = new NamedFactAttribute();
+			var result = attribute.AbsolutePath;
+
+			result.Should().Contain("AutoName.xUnit");
+			result.Should().Contain("AutoName.xUnit.Tests");
+			result.Should().Contain("PropertyTests.cs");
+		}
+
+		[Fact]
+		public void AbsolutePathWithoutExtension_Should_Have_The_Correct_Value()
+		{
+			var attribute = new NamedFactAttribute();
+			var result = attribute.AbsolutePathWithoutExtension;
+
+			result.Should().Contain("AutoName.xUnit");
+			result.Should().Contain("AutoName.xUnit.Tests");
+			result.Should().Contain("PropertyTests");
+			result.Should().NotContain("PropertyTests.cs");
+		}
+
+		[Fact]
+		public void NameSpace_Should_Have_The_Correct_Value()
+		{
+			var attribute = new NamedFactAttribute();
+			var result = attribute.NameSpace;
+
+			result.Should().Be("AutoName.xUnit.Tests");
+		}
+
+		[Fact]
+		public void FileName_Should_Have_The_Correct_Value()
+		{
+			var attribute = new NamedFactAttribute();
+			var result = attribute.FileName;
+
+			result.Should().Be("PropertyTests.cs");
+		}
+
+		[Fact]
+		public void FileNameWithoutExtension_Should_Have_The_Correct_Value()
+		{
+			var attribute = new NamedFactAttribute();
+			var result = attribute.FileNameWithoutExtension;
+
+			result.Should().Be("PropertyTests");
+		}
+	}
 }
