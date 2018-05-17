@@ -62,8 +62,7 @@ namespace AutoName.xUnit
         {}
 
         public virtual void SetDisplayName(){
-            var name = CallerMemberName;
-
+			var name = GetName();
 			var splitters = GetSplitters();
             var joiner = GetJoiner();
 
@@ -78,6 +77,26 @@ namespace AutoName.xUnit
 
             base.DisplayName = result;
         }
+
+		private string GetName()
+		{
+			string result = string.Empty;
+
+			foreach (NameIt name in Enum.GetValues(typeof(NameIt)))
+			{
+				if (NameIt.HasFlag(name))
+				{
+					result += GetProperty<string>(name.ToString());
+				};
+			}
+
+			return result;
+		}
+
+		private T GetProperty<T>(string name)
+		{
+			return (T)this.GetType().GetProperty(name).GetValue(this, null);
+		}
 
 		private string GetJoiner()
 		{
