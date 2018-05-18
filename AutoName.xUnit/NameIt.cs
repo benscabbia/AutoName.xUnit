@@ -9,7 +9,7 @@ namespace AutoName.xUnit
 		AbsolutePathWithoutExtension = 2,
 		NameSpace = 4,
 		FileName = 8,
-		FileNameWithoutExtention = 16,
+		FileNameWithoutExtension = 16,
 		MethodName = 32
 	}
 }
