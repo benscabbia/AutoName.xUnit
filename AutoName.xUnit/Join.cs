@@ -14,7 +14,7 @@ namespace AutoName.xUnit
 		public string JoinWithSingleTrimmedSpace(IEnumerable<string> words)
 		{
 			Guard.ArgumentIsNotNullOrWhiteSpace(words);
-			IEnumerable<string> trimmedWords = words.Select(s => s.Trim());
+			var trimmedWords = words.Select(s => s.Trim());
 			return string.Join(" ", trimmedWords);
 		}
 

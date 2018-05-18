@@ -1,5 +1,3 @@
-using System;
-
 namespace AutoName.xUnit
 {
 	public enum JoinWith

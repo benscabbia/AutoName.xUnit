@@ -9,7 +9,7 @@ namespace AutoName.xUnit
 		public IEnumerable<string> SplitByUppercase(string word)
 		{
 			Guard.ArgumentIsNotNullOrWhiteSpace(word);
-			return Regex.Split(word, @"(?<!^)(?=[A-Z])");
+			return Regex.Split(word, "(?<!^)(?=[A-Z])");
 		}
 
 		public IEnumerable<string> SplitByUnderscore(string word)

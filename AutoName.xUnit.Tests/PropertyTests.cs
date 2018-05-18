@@ -41,7 +41,7 @@ namespace AutoName.xUnit.Tests
         {
             var attribute = new NamedFactAttribute();
             var result = attribute.MethodName;
-            
+
             result.Should().Be("CallerMemberName_Should_Have_The_Correct_Value_Set_When_Using_Underscores");
         }
 
@@ -50,7 +50,7 @@ namespace AutoName.xUnit.Tests
         {
             var attribute = new NamedFactAttribute();
             var result = attribute.MethodName;
-            
+
             result.Should().Be("CallerMemberNameShouldHaveTheCorrectValueSetWhenUsingUppercase");
         }
 
@@ -59,7 +59,7 @@ namespace AutoName.xUnit.Tests
         {
             var attribute = new NamedFactAttribute();
             var result = attribute.MethodName;
-            
+
             result.Should().Be("CallerMemberName_ShouldHaveTheCorrectValueSet_WhenUsingMixedNamed_");
         }
 
@@ -68,7 +68,7 @@ namespace AutoName.xUnit.Tests
         {
             var attribute = new NamedFactAttribute();
             var result = attribute.FileName;
-            
+
             result.Should().Be("PropertyTests.cs");
         }
 

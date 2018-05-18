@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using Xunit;
 
 namespace AutoName.xUnit
 {
 	public class NamedFactAttribute : FactAttribute
 	{
-		private Join _join = new Join();
-		private Split _split = new Split();
-
 		public string AbsolutePath { get; }
 		public string AbsolutePathWithoutExtension { get; }
 		public string NameSpace { get; }
@@ -56,9 +50,7 @@ namespace AutoName.xUnit
 			var splitterMethods = LoadSplitters(splitters);
 			var joinerMethod = LoadJoiner(joiner);
 
-			string result = ResolveName(splitterMethods, joinerMethod);
-
-			base.DisplayName = result;
+			base.DisplayName = ResolveName(splitterMethods, joinerMethod);
 		}
 
 		private string ResolveName(
@@ -80,10 +72,7 @@ namespace AutoName.xUnit
 			return pathsArray[pathsArray.Length - 2];
 		}
 
-		private string GetCallerFilePathWithoutFileExtension()
-		{
-			return AbsolutePath.Replace(".cs", "");
-		}
+		private string GetCallerFilePathWithoutFileExtension() => AbsolutePath.Replace(".cs", "");
 
 		private string GetName()
 		{
@@ -94,21 +83,15 @@ namespace AutoName.xUnit
 				if (NameIt.HasFlag(name))
 				{
 					result += GetProperty<string>(name.ToString());
-				};
+				}
 			}
 
 			return result;
 		}
 
-		private T GetProperty<T>(string name)
-		{
-			return (T)GetType().GetProperty(name).GetValue(this, null);
-		}
+		private T GetProperty<T>(string name) => (T)GetType().GetProperty(name).GetValue(this, null);
 
-		private string GetJoiner()
-		{
-			return $"JoinWith{Joiner.ToString()}";
-		}
+		private string GetJoiner() => $"JoinWith{Joiner.ToString()}";
 
 		private IEnumerable<string> GetSplitters()
 		{
@@ -118,7 +101,7 @@ namespace AutoName.xUnit
 				if (Splitter.HasFlag(splitter))
 				{
 					result.Add($"SplitBy{splitter.ToString()}");
-				};
+				}
 			}
 			return result;
 		}
@@ -127,9 +110,7 @@ namespace AutoName.xUnit
 		{
 			var o = new Join();
 			var method = o.GetType().GetMethod(methodName);
-			Func<IEnumerable<string>, string> converted =
-				(Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
-			return converted;
+			return (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
 		}
 
 		private static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)

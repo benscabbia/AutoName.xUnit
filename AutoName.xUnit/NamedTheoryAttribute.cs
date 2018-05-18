@@ -18,7 +18,6 @@ namespace AutoName.xUnit
 		: this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
 		{ }
 
-
 		public NamedTheoryAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
 		: this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
 		{ }

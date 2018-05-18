@@ -72,6 +72,5 @@ namespace AutoName.xUnit.Tests
 			var attribute = new Join();
 			attribute.Invoking(x => x.JoinWithDoubleSpace(null)).Should().Throw<ArgumentException>();
 		}
-
 	}
 }
