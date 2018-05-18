@@ -12,7 +12,6 @@ namespace AutoName.xUnit.Tests
 			var result = attribute.DisplayName;
 
 			result.Should().Be("Display Name Should Have Correct Value When Using Uppercase");
-
 		}
 
 		[Fact]

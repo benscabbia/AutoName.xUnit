@@ -54,6 +54,5 @@ namespace AutoName.xUnit.Tests
 			var attribute = new Split();
 			attribute.Invoking(x => x.SplitByUnderscore(null)).Should().Throw<ArgumentException>();
 		}
-
 	}
 }
