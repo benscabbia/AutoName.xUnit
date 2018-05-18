@@ -86,6 +86,80 @@ namespace AutoName.xUnit.Tests
 			result.Should().Be("Display\tName\tShould\tHave\tCorrect\tValue\tWhen\tUsing\tTab\tJoiner");
 		}
 
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingAbsolutePath()
+		{
+			var attribute = new NamedFactAttribute(NameIt.AbsolutePath, SplitBy.Uppercase, JoinWith.SingleSpace);
+
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Contain("Display Name Tests.cs");
+			result.Should().Contain("Auto Name.x");
+		}
+
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingAbsolutePathWithoutExtension()
+		{
+			var attribute = new NamedFactAttribute(NameIt.AbsolutePathWithoutExtension, SplitBy.Uppercase, JoinWith.SingleSpace);
+
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Contain("Display Name Tests");
+			result.Should().Contain("Auto Name.x");
+		}
+
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingNamespace()
+		{
+			var attribute = new NamedFactAttribute(NameIt.NameSpace, SplitBy.Underscore, JoinWith.SingleSpace);
+
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Be("AutoName.xUnit.Tests");
+		}
+
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingFileName()
+		{
+			var attribute = new NamedFactAttribute(NameIt.FileName, SplitBy.Uppercase, JoinWith.SingleSpace);
+
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Be("Display Name Tests.cs");
+		}
+
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingFileNameWithoutExtention()
+		{
+			var attribute = new NamedFactAttribute(NameIt.FileNameWithoutExtension, SplitBy.Uppercase, JoinWith.SingleSpace);
+
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Be("Display Name Tests");
+		}
+
+		[Fact]
+		public void DisplayNameShouldHaveCorrectValueWhenUsingMethodName()
+		{
+			var attribute = new NamedFactAttribute(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace);
+
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Be("Display Name Should Have Correct Value When Using Method Name");
+		}
+
 		/*
             Test Splitter + Joiner
 
