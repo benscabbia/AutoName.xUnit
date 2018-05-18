@@ -102,7 +102,7 @@ namespace AutoName.xUnit
 
 		private T GetProperty<T>(string name)
 		{
-			return (T)this.GetType().GetProperty(name).GetValue(this, null);
+			return (T)GetType().GetProperty(name).GetValue(this, null);
 		}
 
 		private string GetJoiner()
@@ -123,7 +123,7 @@ namespace AutoName.xUnit
 			return result;
 		}
 
-		private Func<IEnumerable<string>, string> LoadJoiner(string methodName)
+		private static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
 		{
 			var o = new Join();
 			var method = o.GetType().GetMethod(methodName);
@@ -132,7 +132,7 @@ namespace AutoName.xUnit
 			return converted;
 		}
 
-		private IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
+		private static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
 		{
 			var x = new Split();
 			var methods = new List<Func<string, IEnumerable<string>>>();
