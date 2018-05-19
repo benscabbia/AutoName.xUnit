@@ -160,11 +160,26 @@ namespace AutoName.xUnit.Tests
 			result.Should().Be("Display Name Should Have Correct Value When Using Method Name");
 		}
 
-		/*
-            Test Splitter + Joiner
+		[Theory]
+		[InlineData("Should_FailToWithdrawMoney_ForInvalidAccount", "Should FailToWithdrawMoney ForInvalidAccount", SplitBy.Underscore)]	
+		[InlineData("Should_FailToWithdrawMoney_ForInvalidAccount", "Should\tFailToWithdrawMoney\tForInvalidAccount", SplitBy.Underscore, JoinWith.Tab)]		
+		[InlineData("Should_FailToWithdrawMoney_ForInvalidAccount", "Should Fail To Withdraw Money For Invalid Account", SplitBy.Underscore | SplitBy.Uppercase)]
+		[InlineData("Should_FailToWithdrawMoney_ForInvalidAccount", "Should  FailToWithdrawMoney  ForInvalidAccount", SplitBy.Underscore, JoinWith.DoubleSpace)]		
+		[InlineData("Should_FailToWithdrawMoney_ForInvalidAccount", "Should  Fail  To  Withdraw  Money  For  Invalid  Account", SplitBy.Underscore | SplitBy.Uppercase, JoinWith.DoubleSpace)]
+		[InlineData("testFailToWithdrawMoneyIfAccountIsInvalid", "test Fail To Withdraw Money If Account Is Invalid", SplitBy.Uppercase, JoinWith.SingleSpace)]
+		[InlineData("testFailToWithdrawMoneyIfAccountIsInvalid", "test  Fail  To  Withdraw  Money  If  Account  Is  Invalid", SplitBy.Uppercase, JoinWith.DoubleSpace)]
+		[InlineData("When_InvalidAccount_Expect_WithdrawMoneyToFail", "When InvalidAccount Expect WithdrawMoneyToFail", SplitBy.Underscore, JoinWith.SingleSpace)]
+		[InlineData("When_InvalidAccount_Expect_WithdrawMoneyToFail", "When_ Invalid Account_ Expect_ Withdraw Money To Fail", SplitBy.Uppercase, JoinWith.SingleSpace)]
+		[InlineData("When_InvalidAccount_Expect_WithdrawMoneyToFail", "When Invalid Account Expect Withdraw Money To Fail", SplitBy.Uppercase | SplitBy.Underscore, JoinWith.SingleSpace)]
+		public void DisplayNameShouldHaveCorrectValueForTestCases(string testCase, string expected, SplitBy splitter, JoinWith joiner = JoinWith.SingleSpace)
+		{
+			var attribute = new NamedFactAttribute(splitter, joiner, testCase);
 
-            
-        
-         */
+			attribute.SetDisplayName();
+
+			var result = attribute.DisplayName;
+
+			result.Should().Be(expected);
+		}
 	}
 }
