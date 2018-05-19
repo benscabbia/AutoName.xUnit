@@ -57,12 +57,11 @@ namespace AutoName.xUnit
 			IEnumerable<Func<string, IEnumerable<string>>> splitterMethods,
 			Func<IEnumerable<string>, string> joinerMethod)
 		{
-			var result = string.Empty;
+			var result = GetName();
 			foreach (var splitterMethod in splitterMethods)
 			{
-				result = joinerMethod(splitterMethod(GetName()));
+				result = joinerMethod(splitterMethod(result));
 			}
-
 			return result;
 		}
 
