@@ -1,15 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.3.1" />
   </ItemGroup>
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>AutoName.xUnit</Title>
+    <Description>An xUnit extension to dynamically generate human readable test names.</Description>
+    <Authors>Benjamin Scabbia</Authors>
+		<Copyright>Copyright 2018 (c) Benjamin Scabbia</Copyright>    
+    <Company>https://benjaminscabbia.co.uk</Company>
+    <PackageProjectUrl>https://github.com/gudthing/AutoName.xUnit.git</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/gudthing/autoname.xunit/blob/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/gudthing/AutoName.xUnit</RepositoryUrl>
+    <Summary>An xUnit extension to dynamically generate human readable test names.</Summary>
+    <PackageTags>xunit, xunit.net, test, testing, unit-testing, name</PackageTags>
+    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+    <Version>1.0.0</Version>
   </PropertyGroup>
-  
 </Project>
