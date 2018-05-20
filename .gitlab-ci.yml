@@ -17,12 +17,7 @@ pack:
   variables:
     PACK_PATH: $BUILD_CONFIGURATION
   script:
-    - pwd && ls 
-    - echo $BUILD_CONFIGURATION 
-    - echo $CI_PROJECT_DIR 
-    - echo $PACK_PATH 
-    - cd $CI_PROJECT_DIR/$PACK_PATH 
-    - ls
+    - dotnet build AutoName.xUnit/
     - dotnet pack AutoName.xUnit/ -c $BUILD_CONFIGURATION -o $CI_PROJECT_DIR/$PACK_PATH
 
   artifacts:
