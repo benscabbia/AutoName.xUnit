@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -15,7 +15,7 @@ namespace AutoName.xUnit
 		public string FileNameWithoutExtension { get; }
 		public string MethodName { get; }
 
-		public NameIt NameIt { get; }
+		public NameIt NameIt { get; set; }
 		public SplitBy Splitter { get; }
 		public JoinWith Joiner { get; }
 
@@ -53,7 +53,7 @@ namespace AutoName.xUnit
 			base.DisplayName = ResolveName(splitterMethods, joinerMethod);
 		}
 
-		private string ResolveName(
+		protected string ResolveName(
 			IEnumerable<Func<string, IEnumerable<string>>> splitterMethods,
 			Func<IEnumerable<string>, string> joinerMethod)
 		{
@@ -90,9 +90,9 @@ namespace AutoName.xUnit
 
 		private T GetProperty<T>(string name) => (T)GetType().GetProperty(name).GetValue(this, null);
 
-		private string GetJoiner() => $"JoinWith{Joiner.ToString()}";
+		protected string GetJoiner() => $"JoinWith{Joiner.ToString()}";
 
-		private IEnumerable<string> GetSplitters()
+		protected IEnumerable<string> GetSplitters()
 		{
 			List<string> result = new List<string>();
 			foreach (SplitBy splitter in Enum.GetValues(typeof(SplitBy)))
@@ -105,14 +105,14 @@ namespace AutoName.xUnit
 			return result;
 		}
 
-		private static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
+		protected static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
 		{
 			var o = new Join();
 			var method = o.GetType().GetMethod(methodName);
 			return (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
 		}
 
-		private static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
+		protected static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
 		{
 			var x = new Split();
 			var methods = new List<Func<string, IEnumerable<string>>>();
