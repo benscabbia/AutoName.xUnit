@@ -19,12 +19,16 @@ namespace AutoName.xUnit
 		public SplitBy Splitter { get; }
 		public JoinWith Joiner { get; }
 
-		public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-		: this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
-		{ }
-
 		public NamedFactAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
 		: this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
+		{ }
+		
+		public NamedFactAttribute(SplitBy splitBy, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+		: this(NameIt.MethodName, splitBy, JoinWith.SingleSpace, callerName, sourceFilePath)
+		{ }
+		
+		public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+		: this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
 		{ }
 
 		public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string methodName = null, [CallerFilePath] string absoluteFilePath = null)
