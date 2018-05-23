@@ -53,6 +53,29 @@ namespace AutoName.xUnit
 			base.DisplayName = ResolveName(splitterMethods, joinerMethod);
 		}
 
+		protected static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
+		{
+			var o = new Join();
+			var method = o.GetType().GetMethod(methodName);
+			return (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
+		}
+
+		protected static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
+		{
+			var x = new Split();
+			var methods = new List<Func<string, IEnumerable<string>>>();
+
+			foreach (var methodName in methodNames)
+			{
+				var method = x.GetType().GetMethod(methodName);
+				Func<string, IEnumerable<string>> converted =
+					(Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);
+				methods.Add(converted);
+			}
+
+			return methods;
+		}
+
 		protected string ResolveName(
 			IEnumerable<Func<string, IEnumerable<string>>> splitterMethods,
 			Func<IEnumerable<string>, string> joinerMethod)
@@ -61,6 +84,21 @@ namespace AutoName.xUnit
 			foreach (var splitterMethod in splitterMethods)
 			{
 				result = joinerMethod(splitterMethod(result));
+			}
+			return result;
+		}
+
+		protected string GetJoiner() => $"JoinWith{Joiner.ToString()}";
+
+		protected IEnumerable<string> GetSplitters()
+		{
+			List<string> result = new List<string>();
+			foreach (SplitBy splitter in Enum.GetValues(typeof(SplitBy)))
+			{
+				if (Splitter.HasFlag(splitter))
+				{
+					result.Add($"SplitBy{splitter.ToString()}");
+				}
 			}
 			return result;
 		}
@@ -89,43 +127,5 @@ namespace AutoName.xUnit
 		}
 
 		private T GetProperty<T>(string name) => (T)GetType().GetProperty(name).GetValue(this, null);
-
-		protected string GetJoiner() => $"JoinWith{Joiner.ToString()}";
-
-		protected IEnumerable<string> GetSplitters()
-		{
-			List<string> result = new List<string>();
-			foreach (SplitBy splitter in Enum.GetValues(typeof(SplitBy)))
-			{
-				if (Splitter.HasFlag(splitter))
-				{
-					result.Add($"SplitBy{splitter.ToString()}");
-				}
-			}
-			return result;
-		}
-
-		protected static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
-		{
-			var o = new Join();
-			var method = o.GetType().GetMethod(methodName);
-			return (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
-		}
-
-		protected static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
-		{
-			var x = new Split();
-			var methods = new List<Func<string, IEnumerable<string>>>();
-
-			foreach (var methodName in methodNames)
-			{
-				var method = x.GetType().GetMethod(methodName);
-				Func<string, IEnumerable<string>> converted =
-					(Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);
-				methods.Add(converted);
-			}
-
-			return methods;
-		}
 	}
 }
