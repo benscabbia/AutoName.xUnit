@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AutoName.xUnit
@@ -16,6 +17,12 @@ namespace AutoName.xUnit
         {
             Guard.ArgumentIsNotNullOrWhiteSpace(word);
             return word.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public IEnumerable<string> SplitByNumber(string word)
+        {
+            Guard.ArgumentIsNotNullOrWhiteSpace(word);
+            return Regex.Split(word, @"(\d+|[A-Za-z]+)").Where(s => s != String.Empty);
         }
     }
 }

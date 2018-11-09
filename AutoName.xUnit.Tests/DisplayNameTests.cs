@@ -171,6 +171,14 @@ namespace AutoName.xUnit.Tests
         [InlineData("When_InvalidAccount_Expect_WithdrawMoneyToFail", "When InvalidAccount Expect WithdrawMoneyToFail", SplitBy.Underscore, JoinWith.SingleSpace)]
         [InlineData("When_InvalidAccount_Expect_WithdrawMoneyToFail", "When_ Invalid Account_ Expect_ Withdraw Money To Fail", SplitBy.Uppercase, JoinWith.SingleSpace)]
         [InlineData("When_InvalidAccount_Expect_WithdrawMoneyToFail", "When Invalid Account Expect Withdraw Money To Fail", SplitBy.Uppercase | SplitBy.Underscore, JoinWith.SingleSpace)]
+        [InlineData("Should0_FailToWithdrawMoney1_ForInvalidAccount2", "Should0 FailToWithdrawMoney1 ForInvalidAccount2", SplitBy.Underscore)]
+        [InlineData("Should0FailToWithdrawMoney1ForInvalidAccount2", "Should 0 FailToWithdrawMoney 1 ForInvalidAccount 2", SplitBy.Number)]
+        [InlineData("Should0_FailToWithdrawMoney1_ForInvalidAccount2", "Should 0 FailToWithdrawMoney 1 ForInvalidAccount 2", SplitBy.Underscore | SplitBy.Number)]
+        [InlineData("Should0FailToWithdrawMoney1ForInvalidAccount2", "Should 0 Fail To Withdraw Money 1 For Invalid Account 2", SplitBy.Uppercase | SplitBy.Number)]
+        [InlineData("Hello1World2", "Hello1 World2", SplitBy.Uppercase)]
+        [InlineData("Hello1World2", "Hello 1 World 2", SplitBy.Number)]
+        [InlineData("Hello1World2", "Hello 1 World 2", SplitBy.Number | SplitBy.Uppercase)]
+        [InlineData("Should0FailToWith_drawMon_ey1ForIn_validAccount2", "Should 0 Fail To With draw Mon ey 1 For In valid Account 2", SplitBy.Underscore | SplitBy.Uppercase | SplitBy.Number)]
         public void DisplayNameShouldHaveCorrectValueForTestCases(string testCase, string expected, SplitBy splitter, JoinWith joiner = JoinWith.SingleSpace)
         {
             var attribute = new NamedFactAttribute(splitter, joiner, testCase);
