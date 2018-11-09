@@ -1,8 +1,8 @@
 # AutoName.xUnit
 
-| master | feature
-| --- | ---
-| [![pipeline status](https://gitlab.com/gudthing/autoname.xunit/badges/master/pipeline.svg)](https://gitlab.com/gudthing/autoname.xunit/commits/master) | [![pipeline status](https://gitlab.com/gudthing/autoname.xunit/badges/feature/ci/pipeline.svg)](https://gitlab.com/gudthing/autoname.xunit/commits/feature/ci)
+| master                                                                                                                                                 | feature                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [![pipeline status](https://gitlab.com/gudthing/autoname.xunit/badges/master/pipeline.svg)](https://gitlab.com/gudthing/autoname.xunit/commits/master) | [![pipeline status](https://gitlab.com/gudthing/autoname.xunit/badges/feature/ci/pipeline.svg)](https://gitlab.com/gudthing/autoname.xunit/commits/feature/ci) |
  
 
 ## Usage
