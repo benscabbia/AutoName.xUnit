@@ -1,8 +1,8 @@
 # AutoName.xUnit
 
-| master                                                                                                                                                 | feature                                                                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![pipeline status](https://gitlab.com/gudthing/autoname.xunit/badges/master/pipeline.svg)](https://gitlab.com/gudthing/autoname.xunit/commits/master) | [![pipeline status](https://gitlab.com/gudthing/autoname.xunit/badges/feature/ci/pipeline.svg)](https://gitlab.com/gudthing/autoname.xunit/commits/feature/ci) |
+| master                                                                                                                                                     | feature                                                                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [![pipeline status](https://gitlab.com/benscabbia/autoname.xunit/badges/master/pipeline.svg)](https://gitlab.com/benscabbia/autoname.xunit/commits/master) | [![pipeline status](https://gitlab.com/benscabbia/autoname.xunit/badges/feature/ci/pipeline.svg)](https://gitlab.com/benscabbia/autoname.xunit/commits/feature/ci) |
  
 
 ## Usage
@@ -10,10 +10,11 @@ There are **three ways** to use this package:
 
 1. **Use defaults**
 2. **Customise inline default behaviour**:
-    3. Name - The name for the test
-    4. Splitter - The method to use to split your unit test method name
-    5. Joiner - The method to use to join your splitter
-6. **Custom Implementation**
+
+    1. Name - The name for the test
+    2. Splitter - The method to use to split your unit test method name
+    3. Joiner - The method to use to join your splitter
+3. **Custom Implementation**
 
 ---
 ### 1. Use Defaults 
@@ -70,12 +71,38 @@ public void The_Name_Of_Another_Test_Method(...)
 public void TheName_OfYour_TestMethod()
 {}
 
+
+// Output: `Test 123 Of Part A`
+[NamedFact(SplitBy.Uppercase | SplitBy.Number, JoinWith.SingleSpace)] 
+public void Test123OfPartA()
+{}
+
 // Output: `The Name Of Another Test Method`
 [NamedTheory(SplitBy.Underscore | SplitBy.Uppercase, JoinWith.SingleSpace)]
 [InlineData(...)]
 public void The_Name_Of_Another_Test_Method(...)
 {}
 ```
+
+#### Options Available:
+
+```c#
+SplitBy.Underscore
+SplitBy.Uppercase
+SplitBy.Number
+
+JoinWith.SingleSpace
+JoinWith.SingleTrimmedSpace
+JoinWith.DoubleSpace
+JoinWith.Tab
+
+NameIt.AbsolutePath 
+NameIt.AbsolutePathWithoutExtension 
+NameIt.NameSpace 
+NameIt.FileName 
+NameIt.FileNameWithoutExtension 
+NameIt.MethodName 
+```   
 
 ---
 ### 3. Custom Implementation
