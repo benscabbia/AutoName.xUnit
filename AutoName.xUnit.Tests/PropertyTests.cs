@@ -72,54 +72,54 @@ namespace AutoName.xUnit.Tests
             result.Should().Be("PropertyTests.cs");
         }
 
-		[Fact]
-		public void AbsolutePath_Should_Have_The_Correct_Value()
-		{
-			var attribute = new NamedFactAttribute();
-			var result = attribute.AbsolutePath;
+        [Fact]
+        public void AbsolutePath_Should_Have_The_Correct_Value()
+        {
+            var attribute = new NamedFactAttribute();
+            var result = attribute.AbsolutePath;
 
-			result.Should().Contain("AutoName.xUnit");
-			result.Should().Contain("AutoName.xUnit.Tests");
-			result.Should().Contain("PropertyTests.cs");
-		}
+            result.Should().Contain("AutoName.xUnit");
+            result.Should().Contain("AutoName.xUnit.Tests");
+            result.Should().Contain("PropertyTests.cs");
+        }
 
-		[Fact]
-		public void AbsolutePathWithoutExtension_Should_Have_The_Correct_Value()
-		{
-			var attribute = new NamedFactAttribute();
-			var result = attribute.AbsolutePathWithoutExtension;
+        [Fact]
+        public void AbsolutePathWithoutExtension_Should_Have_The_Correct_Value()
+        {
+            var attribute = new NamedFactAttribute();
+            var result = attribute.AbsolutePathWithoutExtension;
 
-			result.Should().Contain("AutoName.xUnit");
-			result.Should().Contain("AutoName.xUnit.Tests");
-			result.Should().Contain("PropertyTests");
-			result.Should().NotContain("PropertyTests.cs");
-		}
+            result.Should().Contain("AutoName.xUnit");
+            result.Should().Contain("AutoName.xUnit.Tests");
+            result.Should().Contain("PropertyTests");
+            result.Should().NotContain("PropertyTests.cs");
+        }
 
-		[Fact]
-		public void NameSpace_Should_Have_The_Correct_Value()
-		{
-			var attribute = new NamedFactAttribute();
-			var result = attribute.NameSpace;
+        [Fact]
+        public void NameSpace_Should_Have_The_Correct_Value()
+        {
+            var attribute = new NamedFactAttribute();
+            var result = attribute.NameSpace;
 
-			result.Should().Be("AutoName.xUnit.Tests");
-		}
+            result.Should().Be("AutoName.xUnit.Tests");
+        }
 
-		[Fact]
-		public void FileName_Should_Have_The_Correct_Value()
-		{
-			var attribute = new NamedFactAttribute();
-			var result = attribute.FileName;
+        [Fact]
+        public void FileName_Should_Have_The_Correct_Value()
+        {
+            var attribute = new NamedFactAttribute();
+            var result = attribute.FileName;
 
-			result.Should().Be("PropertyTests.cs");
-		}
+            result.Should().Be("PropertyTests.cs");
+        }
 
-		[Fact]
-		public void FileNameWithoutExtension_Should_Have_The_Correct_Value()
-		{
-			var attribute = new NamedFactAttribute();
-			var result = attribute.FileNameWithoutExtension;
+        [Fact]
+        public void FileNameWithoutExtension_Should_Have_The_Correct_Value()
+        {
+            var attribute = new NamedFactAttribute();
+            var result = attribute.FileNameWithoutExtension;
 
-			result.Should().Be("PropertyTests");
-		}
-	}
+            result.Should().Be("PropertyTests");
+        }
+    }
 }

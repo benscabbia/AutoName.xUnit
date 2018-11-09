@@ -6,130 +6,130 @@ using Xunit;
 
 namespace AutoName.xUnit
 {
-	public class NamedFactAttribute : FactAttribute
-	{
-		public string AbsolutePath { get; }
-		public string AbsolutePathWithoutExtension { get; }
-		public string NameSpace { get; }
-		public string FileName { get; }
-		public string FileNameWithoutExtension { get; }
-		public string MethodName { get; }
+    public class NamedFactAttribute : FactAttribute
+    {
+        public string AbsolutePath { get; }
+        public string AbsolutePathWithoutExtension { get; }
+        public string NameSpace { get; }
+        public string FileName { get; }
+        public string FileNameWithoutExtension { get; }
+        public string MethodName { get; }
 
-		public NameIt NameIt { get; set; }
-		public SplitBy Splitter { get; }
-		public JoinWith Joiner { get; }
+        public NameIt NameIt { get; set; }
+        public SplitBy Splitter { get; }
+        public JoinWith Joiner { get; }
 
-		public NamedFactAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-		: this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
-		{ }
-		
-		public NamedFactAttribute(SplitBy splitBy, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-		: this(NameIt.MethodName, splitBy, JoinWith.SingleSpace, callerName, sourceFilePath)
-		{ }
-		
-		public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
-		: this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
-		{ }
+        public NamedFactAttribute([CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+        : this(NameIt.MethodName, SplitBy.Uppercase, JoinWith.SingleSpace, callerName, sourceFilePath)
+        { }
 
-		public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string methodName = null, [CallerFilePath] string absoluteFilePath = null)
-		{
-			NameIt = nameIt;
-			Splitter = splitBy;
-			Joiner = joinWith;
+        public NamedFactAttribute(SplitBy splitBy, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+        : this(NameIt.MethodName, splitBy, JoinWith.SingleSpace, callerName, sourceFilePath)
+        { }
 
-			AbsolutePath = absoluteFilePath;
-			AbsolutePathWithoutExtension = GetCallerFilePathWithoutFileExtension();
-			NameSpace = GetNameSpace();
-			FileName = Path.GetFileName(absoluteFilePath);
-			FileNameWithoutExtension = Path.GetFileNameWithoutExtension(absoluteFilePath);
-			MethodName = methodName;
+        public NamedFactAttribute(SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string callerName = null, [CallerFilePath] string sourceFilePath = null)
+        : this(NameIt.MethodName, splitBy, joinWith, callerName, sourceFilePath)
+        { }
 
-			SetDisplayName();
-		}
+        public NamedFactAttribute(NameIt nameIt, SplitBy splitBy, JoinWith joinWith, [CallerMemberName] string methodName = null, [CallerFilePath] string absoluteFilePath = null)
+        {
+            NameIt = nameIt;
+            Splitter = splitBy;
+            Joiner = joinWith;
 
-		public virtual void SetDisplayName()
-		{
-			var splitters = GetSplitters();
-			var joiner = GetJoiner();
-			var splitterMethods = LoadSplitters(splitters);
-			var joinerMethod = LoadJoiner(joiner);
+            AbsolutePath = absoluteFilePath;
+            AbsolutePathWithoutExtension = GetCallerFilePathWithoutFileExtension();
+            NameSpace = GetNameSpace();
+            FileName = Path.GetFileName(absoluteFilePath);
+            FileNameWithoutExtension = Path.GetFileNameWithoutExtension(absoluteFilePath);
+            MethodName = methodName;
 
-			base.DisplayName = ResolveName(splitterMethods, joinerMethod);
-		}
+            SetDisplayName();
+        }
 
-		protected static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
-		{
-			var o = new Join();
-			var method = o.GetType().GetMethod(methodName);
-			return (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
-		}
+        public virtual void SetDisplayName()
+        {
+            var splitters = GetSplitters();
+            var joiner = GetJoiner();
+            var splitterMethods = LoadSplitters(splitters);
+            var joinerMethod = LoadJoiner(joiner);
 
-		protected static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
-		{
-			var x = new Split();
-			var methods = new List<Func<string, IEnumerable<string>>>();
+            base.DisplayName = ResolveName(splitterMethods, joinerMethod);
+        }
 
-			foreach (var methodName in methodNames)
-			{
-				var method = x.GetType().GetMethod(methodName);
-				Func<string, IEnumerable<string>> converted =
-					(Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);
-				methods.Add(converted);
-			}
+        protected static Func<IEnumerable<string>, string> LoadJoiner(string methodName)
+        {
+            var o = new Join();
+            var method = o.GetType().GetMethod(methodName);
+            return (Func<IEnumerable<string>, string>)Delegate.CreateDelegate(typeof(Func<IEnumerable<string>, string>), o, method, false);
+        }
 
-			return methods;
-		}
+        protected static IEnumerable<Func<string, IEnumerable<string>>> LoadSplitters(IEnumerable<string> methodNames)
+        {
+            var x = new Split();
+            var methods = new List<Func<string, IEnumerable<string>>>();
 
-		protected string ResolveName(
-			IEnumerable<Func<string, IEnumerable<string>>> splitterMethods,
-			Func<IEnumerable<string>, string> joinerMethod)
-		{
-			var result = GetName();
-			foreach (var splitterMethod in splitterMethods)
-			{
-				result = joinerMethod(splitterMethod(result));
-			}
-			return result;
-		}
+            foreach (var methodName in methodNames)
+            {
+                var method = x.GetType().GetMethod(methodName);
+                Func<string, IEnumerable<string>> converted =
+                    (Func<string, IEnumerable<string>>)Delegate.CreateDelegate(typeof(Func<string, IEnumerable<string>>), x, method, false);
+                methods.Add(converted);
+            }
 
-		protected string GetJoiner() => $"JoinWith{Joiner.ToString()}";
+            return methods;
+        }
 
-		protected IEnumerable<string> GetSplitters()
-		{
-			List<string> result = new List<string>();
-			foreach (SplitBy splitter in Enum.GetValues(typeof(SplitBy)))
-			{
-				if (Splitter.HasFlag(splitter))
-				{
-					result.Add($"SplitBy{splitter.ToString()}");
-				}
-			}
-			return result;
-		}
+        protected string ResolveName(
+            IEnumerable<Func<string, IEnumerable<string>>> splitterMethods,
+            Func<IEnumerable<string>, string> joinerMethod)
+        {
+            var result = GetName();
+            foreach (var splitterMethod in splitterMethods)
+            {
+                result = joinerMethod(splitterMethod(result));
+            }
+            return result;
+        }
 
-		private string GetNameSpace()
-		{
-			var pathsArray = AbsolutePath.Split(Path.DirectorySeparatorChar);
-			return pathsArray[pathsArray.Length - 2];
-		}
+        protected string GetJoiner() => $"JoinWith{Joiner.ToString()}";
 
-		private string GetCallerFilePathWithoutFileExtension() => AbsolutePath.Replace(".cs", "");
+        protected IEnumerable<string> GetSplitters()
+        {
+            List<string> result = new List<string>();
+            foreach (SplitBy splitter in Enum.GetValues(typeof(SplitBy)))
+            {
+                if (Splitter.HasFlag(splitter))
+                {
+                    result.Add($"SplitBy{splitter.ToString()}");
+                }
+            }
+            return result;
+        }
 
-		private string GetName()
-		{
-			string result = string.Empty;
+        private string GetNameSpace()
+        {
+            var pathsArray = AbsolutePath.Split(Path.DirectorySeparatorChar);
+            return pathsArray[pathsArray.Length - 2];
+        }
 
-			foreach (NameIt name in Enum.GetValues(typeof(NameIt)))
-			{
-				if (NameIt.HasFlag(name))
-				{
-					result += GetProperty<string>(name.ToString());
-				}
-			}
+        private string GetCallerFilePathWithoutFileExtension() => AbsolutePath.Replace(".cs", "");
 
-			return result;
-		}
+        private string GetName()
+        {
+            string result = string.Empty;
 
-		private T GetProperty<T>(string name) => (T)GetType().GetProperty(name).GetValue(this, null);
-	}
+            foreach (NameIt name in Enum.GetValues(typeof(NameIt)))
+            {
+                if (NameIt.HasFlag(name))
+                {
+                    result += GetProperty<string>(name.ToString());
+                }
+            }
+
+            return result;
+        }
+
+        private T GetProperty<T>(string name) => (T)GetType().GetProperty(name).GetValue(this, null);
+    }
 }
